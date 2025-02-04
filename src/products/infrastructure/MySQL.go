@@ -63,3 +63,14 @@ func (mysql *MySQL) GetAll() []domain.Product {
 	fmt.Println("Lista de empleados")
 	return employees
 }
+
+func (mysql *MySQL) Update(id int, product domain.Product) (uint, error) {
+	query := "UPDATE products SET name = ?, quantity = ?, barcode = ?,  WHERE id = ?"
+	res, err := mysql.conn.ExecutePreparedQuery(query, product.Name, product.Quantity, product.BarCode, id)
+	if err != nil {
+		fmt.Println("Error al ejecutar la consulta: %v", err)
+		return 0, err
+	}
+	rows, _ := res.RowsAffected()
+	return uint(rows), nil
+}
