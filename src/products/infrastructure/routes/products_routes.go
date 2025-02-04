@@ -13,7 +13,7 @@ func Routes (r *gin.Engine){
 
 	productsRoutes.POST("/", controllers.NewCreateProductController().Run)
 	productsRoutes.GET("/", controllers.NewGetAllEmployeesController().Run)
-	// productsRoutes.PUT("/:id", controllers.NewUpdateProductByIdController().Run)
+	productsRoutes.PUT("/:id", controllers.NewUpdateProductController().Run)
 	// productsRoutes.DELETE("/:id", controllers.NewDeleteProductByIdController().Run)
 
 	}
