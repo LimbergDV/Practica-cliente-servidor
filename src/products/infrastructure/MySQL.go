@@ -35,3 +35,31 @@ func (mysql *MySQL) Save(product domain.Product) (uint, error) {
 	fmt.Println("Producto creado")
 	return uint(id), nil
 }
+
+func (mysql *MySQL) GetAll() []domain.Product {
+	query := "SELECT * FROM products"
+	var employees []domain.Product
+	rows := mysql.conn.FetchRows(query)
+
+	if rows == nil {
+		fmt.Println("No se obtuvieron los datos")
+		return employees
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var e domain.Product
+		if err := rows.Scan(&e.Id, &e.Name, &e.Quantity, &e.BarCode); err != nil {
+			fmt.Println("Error al escanear la fila: %w", err)
+		} else {
+			employees = append(employees, e)
+		}
+	}
+
+	if err := rows.Err(); err != nil {
+		fmt.Println("Error iterando sobre las filas: %w", err)
+	}
+
+	fmt.Println("Lista de empleados")
+	return employees
+}
